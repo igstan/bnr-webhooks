@@ -58,7 +58,7 @@ Is there an HTTP built-in mechanism for this kind of forwarding?
 
 Note that each of the servers that receives PUT requests may act as registrar
 themselves, thus someone may choose to register with several servers in order
-to achieve eventual consistency in case some of the push servers is down. This
+to achieve eventual consistency in case some of the push servers are down. This
 is where an infinite forward loop might occur.
 
 Also, note that in this scenario push servers need not poll the BNR web sites.
