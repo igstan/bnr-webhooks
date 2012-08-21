@@ -70,6 +70,12 @@ def create_app():
 manager = Manager(create_app)
 
 
+@manager.command
+def poll():
+    xml = get_bnr()
+    notify(xml)
+
+
 if __name__ == '__main__':
     import logging
     log.setLevel(logging.DEBUG)
