@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 import re
+import logging
 import requests
 import flask
 from flask.ext.script import Manager
+
+log = logging.getLogger('bnrhooks')
 
 BNR_URL = 'http://bnr.ro/nbrfxrates.xml'
 
@@ -11,7 +14,10 @@ client_views = flask.Blueprint('client', __name__)
 
 def notify(xml):
     for row in flask.current_app.dbs['subscriber'].find():
-        requests.put(row['uri'], data=xml)
+        uri = row['uri']
+        log.debug('posting to %r', uri)
+        resp = requests.put(uri, data=xml)
+        log.debug('response: %r', resp)
 
 
 @client_views.route('/')
@@ -65,4 +71,7 @@ manager = Manager(create_app)
 
 
 if __name__ == '__main__':
+    import logging
+    log.setLevel(logging.DEBUG)
+    logging.getLogger().addHandler(logging.StreamHandler())
     manager.run()
