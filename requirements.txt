@@ -1,0 +1,6 @@
+-e git+git@github.com:eaudeweb/Flask-HTables.git@09c16d4c7ef8d7fc8fcbd7fe4c006c42dfbf6e72#egg=Flask_HTables-dev
+-e git+git@github.com:eaudeweb/flatkit.git@ea269c06d9f68ba4a34d8b4af12c8013b2072089#egg=flatkit-dev
+-e git+git@github.com:eaudeweb/htables.git@b9f591595fe299e70a5936b6150a165621433911#egg=htables-dev
+Flask==0.9
+Jinja2==2.6
+Werkzeug==0.8.3
