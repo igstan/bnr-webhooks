@@ -12,7 +12,9 @@ def get_bnr():
 
 
 def create_app():
+    import clients
     app = flask.Flask(__name__)
+    app.register_blueprint(clients.client_views)
     return app
 
 
