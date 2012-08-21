@@ -10,6 +10,11 @@ class PollTest(FlaskTestCase):
         bnr_xml = requests.get.return_value.text
         self.assertEqual(app.get_bnr(), bnr_xml)
 
+    def test_get_date_returns_the_date_string(self):
+        import app
+        mock_xml = "<PublishingDate>2012-08-21</PublishingDate>"
+        self.assertEqual(app.get_date(mock_xml), '2012-08-21')
+
 
 class ClientTest(FlaskTestCase):
 
