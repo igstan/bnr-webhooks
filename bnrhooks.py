@@ -12,9 +12,9 @@ BNR_URL = 'http://bnr.ro/nbrfxrates.xml'
 client_views = flask.Blueprint('client', __name__)
 
 
-def notify(xml):
+def notify(xml, date):
     for row in flask.current_app.dbs['subscriber'].find():
-        uri = row['uri']
+        uri = row['uri'].rstrip('/') + '/' + date + '.xml'
         log.debug('posting to %r', uri)
         resp = requests.put(uri, data=xml)
         log.debug('response: %r', resp)
@@ -73,7 +73,8 @@ manager = Manager(create_app)
 @manager.command
 def poll():
     xml = get_bnr()
-    notify(xml)
+    date = get_date(xml)
+    notify(xml, date)
 
 
 if __name__ == '__main__':

@@ -44,5 +44,6 @@ class ClientTest(FlaskTestCase):
         MOCK_XML = "<PublishingDate>2012-08-21</PublishingDate>"
         with self.app.app_context():
             self.app.dbs['subscriber'].new(uri=URI)
-            bnrhooks.notify(MOCK_XML)
-        self.assertEqual(requests.put.mock_calls, [call(URI, data=MOCK_XML)])
+            bnrhooks.notify(MOCK_XML, '2012-08-21')
+        self.assertEqual(requests.put.mock_calls,
+                         [call(URI + '/2012-08-21.xml', data=MOCK_XML)])
