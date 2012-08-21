@@ -1,4 +1,4 @@
-from mock import patch
+from mock import patch, call
 from flatkit.testing import FlaskTestCase
 
 
@@ -33,3 +33,13 @@ class ClientTest(FlaskTestCase):
         resp = self.client.post('/hooks', data={'uri': URI})
         with self.app.app_context():
             self.assertEqual(clients.get_subscribers(), [URI])
+
+    @patch('clients.requests')
+    def test_xml_is_put_to_subscriber(self, requests):
+        import clients
+        URI = 'http://example.com'
+        MOCK_XML = "<PublishingDate>2012-08-21</PublishingDate>"
+        with self.app.app_context():
+            clients.get_subscribers().append(URI)
+            clients.notify(MOCK_XML)
+        self.assertEqual(requests.put.mock_calls, [call(URI, data=MOCK_XML)])

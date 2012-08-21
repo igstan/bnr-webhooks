@@ -1,3 +1,4 @@
+import requests
 import flask
 
 
@@ -11,6 +12,11 @@ def get_subscribers():
 @client_views.record
 def initialize_subscribers(state):
     state.app.extensions['bnrhooks-subscribers'] = []
+
+
+def notify(xml):
+    for uri in get_subscribers():
+        requests.put(uri, data=xml)
 
 
 @client_views.route('/')
