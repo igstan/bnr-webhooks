@@ -34,7 +34,8 @@ def setup_database(app):
 
 def create_app():
     import clients
-    app = flask.Flask(__name__)
+    app = flask.Flask(__name__, instance_relative_config=True)
+    app.config.from_pyfile('settings.py')
     setup_database(app)
     app.register_blueprint(clients.client_views)
     return app
