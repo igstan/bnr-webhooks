@@ -19,7 +19,9 @@ class PollTest(FlaskTestCase):
 class ClientTest(FlaskTestCase):
 
     def setUp(self):
+        import app
         import clients
+        app.setup_database(self.app)
         self.app.register_blueprint(clients.client_views)
         self.client = self.app.test_client()
 
@@ -32,7 +34,9 @@ class ClientTest(FlaskTestCase):
         URI = 'http://example.com'
         resp = self.client.post('/hooks', data={'uri': URI})
         with self.app.app_context():
-            self.assertEqual(clients.get_subscribers(), [URI])
+            dbs = self.app.dbs
+            subscribers = [r['uri'] for r in dbs['subscriber'].find()]
+            self.assertEqual(subscribers, [URI])
 
     @patch('clients.requests')
     def test_xml_is_put_to_subscriber(self, requests):

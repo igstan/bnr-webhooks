@@ -27,6 +27,7 @@ def homepage():
 @client_views.route('/hooks', methods=['GET', 'POST'])
 def hooks():
     if flask.request.method == 'POST':
-        get_subscribers().append(flask.request.form['uri'])
+        dbs = flask.current_app.dbs
+        dbs['subscriber'].new(uri=flask.request.form['uri'])
         return ('subscribed', 201)
     return flask.render_template('hooks.html')
