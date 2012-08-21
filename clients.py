@@ -4,6 +4,15 @@ import flask
 client_views = flask.Blueprint('client', __name__)
 
 
+def get_subscribers():
+    return flask.current_app.extensions['bnrhooks-subscribers']
+
+
+@client_views.record
+def initialize_subscribers(state):
+    state.app.extensions['bnrhooks-subscribers'] = []
+
+
 @client_views.route('/')
 def homepage():
     return flask.redirect(flask.url_for('.hooks'))
@@ -12,5 +21,6 @@ def homepage():
 @client_views.route('/hooks', methods=['GET', 'POST'])
 def hooks():
     if flask.request.method == 'POST':
+        get_subscribers().append(flask.request.form['uri'])
         return ('subscribed', 201)
     return flask.render_template('hooks.html')
