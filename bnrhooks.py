@@ -3,8 +3,28 @@ import re
 import requests
 import flask
 
-
 BNR_URL = 'http://bnr.ro/nbrfxrates.xml'
+
+client_views = flask.Blueprint('client', __name__)
+
+
+def notify(xml):
+    for row in flask.current_app.dbs['subscriber'].find():
+        requests.put(row['uri'], data=xml)
+
+
+@client_views.route('/')
+def homepage():
+    return flask.redirect(flask.url_for('.hooks'))
+
+
+@client_views.route('/hooks', methods=['GET', 'POST'])
+def hooks():
+    if flask.request.method == 'POST':
+        dbs = flask.current_app.dbs
+        dbs['subscriber'].new(uri=flask.request.form['uri'])
+        return ('subscribed', 201)
+    return flask.render_template('hooks.html')
 
 
 def get_bnr():
@@ -33,11 +53,10 @@ def setup_database(app):
 
 
 def create_app():
-    import clients
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.from_pyfile('settings.py')
     setup_database(app)
-    app.register_blueprint(clients.client_views)
+    app.register_blueprint(client_views)
     return app
 
 
