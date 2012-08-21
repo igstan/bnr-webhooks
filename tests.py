@@ -44,6 +44,6 @@ class ClientTest(FlaskTestCase):
         URI = 'http://example.com'
         MOCK_XML = "<PublishingDate>2012-08-21</PublishingDate>"
         with self.app.app_context():
-            clients.get_subscribers().append(URI)
+            self.app.dbs['subscriber'].new(uri=URI)
             clients.notify(MOCK_XML)
         self.assertEqual(requests.put.mock_calls, [call(URI, data=MOCK_XML)])

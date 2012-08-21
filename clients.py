@@ -15,8 +15,8 @@ def initialize_subscribers(state):
 
 
 def notify(xml):
-    for uri in get_subscribers():
-        requests.put(uri, data=xml)
+    for row in flask.current_app.dbs['subscriber'].find():
+        requests.put(row['uri'], data=xml)
 
 
 @client_views.route('/')
