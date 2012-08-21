@@ -39,7 +39,7 @@ instead PUT a JSON object with the following structure:
 ```
 
 Alternative: use multiple `Forward-To` headers, each with a different URL to
-post the XML too.
+post the XML to.
 
 The server receiving the PUT request should forward the XML blob to all the
 URLs in the forward list. ( How do we stop an infinite Internet loop if that
