@@ -6,3 +6,5 @@ Jinja2==2.6
 Werkzeug==0.8.3
 requests==0.13.8
 mock==1.0b1
+Flask-Script==0.3.3
+argparse==1.2.1

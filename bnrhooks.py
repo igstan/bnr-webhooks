@@ -2,6 +2,7 @@
 import re
 import requests
 import flask
+from flask.ext.script import Manager
 
 BNR_URL = 'http://bnr.ro/nbrfxrates.xml'
 
@@ -60,6 +61,8 @@ def create_app():
     return app
 
 
+manager = Manager(create_app)
+
+
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)
+    manager.run()
