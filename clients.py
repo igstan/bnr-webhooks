@@ -5,15 +5,6 @@ import flask
 client_views = flask.Blueprint('client', __name__)
 
 
-def get_subscribers():
-    return flask.current_app.extensions['bnrhooks-subscribers']
-
-
-@client_views.record
-def initialize_subscribers(state):
-    state.app.extensions['bnrhooks-subscribers'] = []
-
-
 def notify(xml):
     for row in flask.current_app.dbs['subscriber'].find():
         requests.put(row['uri'], data=xml)
